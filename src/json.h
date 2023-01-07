@@ -1,0 +1,18 @@
+#include <stdlib.h>
+#include <string.h>
+
+#define bool char
+#define true 1
+#define false 0
+#define uint unsigned int
+#define ull unsigned long long int
+
+#include "dvec.h"
+#include "hmap.h"
+#include "json_obj.h"
+#include "json_parse.h"
+
+#include "dvec.c"
+#include "hmap.c"
+#include "json_obj.c"
+#include "json_parse.c"
