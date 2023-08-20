@@ -1,0 +1,17 @@
+#include <stdio.h>
+#include "../jsonc.h"
+
+int main() {
+  JSON data = json_parse("{\"Peter\": {\"abc\": 23} }");
+
+  JSON peter = json_geth(data, "Peter");
+  JSON abc = json_geth(peter, "abc");
+  printf("%.6f\n", json_get_number(abc));
+  
+  char* stringified = json_stringify(data);
+  printf("%s\n", stringified);
+
+  free(stringified);
+  json_drop(data);
+  return 0;
+}
