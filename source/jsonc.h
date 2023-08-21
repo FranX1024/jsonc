@@ -5,8 +5,8 @@
 #define U64 unsigned long long int
 #endif
 
-#ifndef U4
-#define U4 unsigned int
+#ifndef U32
+#define U32 unsigned int
 #endif
 
 #ifndef false
@@ -58,7 +58,7 @@ void  json_push(JSON json, JSON value);
 JSON  json_pop(JSON json);
 void  json_setf(JSON json, unsigned int ind, JSON val);
 JSON  json_getf(JSON json, unsigned int ind);
-U4    json_length(JSON json);
+U32    json_length(JSON json);
 
 typedef struct JSON_CONS_t {
   struct JSON_CONS_t* next;

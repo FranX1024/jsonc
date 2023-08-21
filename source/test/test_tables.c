@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "../jsonc.h"
 
-const U4 ENTRY_COUNT = 1000;
+const U32 ENTRY_COUNT = 1000;
 
 int main() {
   JSON json = json_make_table();
@@ -32,7 +32,7 @@ int main() {
     int num = 0;
     char* key = it->entry->key;
     double val = json_get_number(it->entry->value);
-    for(U4 i = 0; key[i] != 0; i++)
+    for(U32 i = 0; key[i] != 0; i++)
       num = 10 * num + key[i] - '0';
     if((double)num * 0.5 != val) {
       printf("ERROR: %s -> %.6f\n", key, val);

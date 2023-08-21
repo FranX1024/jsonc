@@ -54,7 +54,7 @@ JSON json_make_array(unsigned int size) {
   arr->data = (JSON*)malloc(real_size * sizeof(JSON));
   arr->size = size;
   arr->real_size = real_size;
-  for(U4 i = 0; i < size; i++) {
+  for(U32 i = 0; i < size; i++) {
     JSON el;
     el.type = JSON_NULL;
     el.data = 0;
@@ -103,7 +103,7 @@ JSON json_getf(JSON json, unsigned int ind) {
   return arr->data[ind];
 }
 
-U4 json_length(JSON json) {
+U32 json_length(JSON json) {
   return ((JSON_ARRAY_t*)json.data)->size;
 }
 
@@ -121,7 +121,7 @@ JSON json_make_table() {
   table->buckets = (JSON_CONS_t**)malloc(bucket_count * sizeof(JSON_CONS_t*));
   table->entry_count = 0;
   table->bucket_count = bucket_count;
-  for(U4 i = 0; i < bucket_count; i++) {
+  for(U32 i = 0; i < bucket_count; i++) {
     table->buckets[i] = (JSON_CONS_t*)0;
   }
   json.type = JSON_TABLE;
@@ -139,7 +139,7 @@ void json_seth(JSON json, const char* key, JSON value) {
     
   JSON_TABLE_t* table = (JSON_TABLE_t*)json.data;
   
-  U4 hash = json_hash_cstring(key) & (table->bucket_count - 1);
+  U32 hash = json_hash_cstring(key) & (table->bucket_count - 1);
 
   if(table->buckets[hash] == (JSON_CONS_t*)0) {
     
@@ -175,7 +175,7 @@ void json_seth(JSON json, const char* key, JSON value) {
   // check if table needs to be resized
   if(table->entry_count * 5 > table->bucket_count * 4) {
     
-    U4 bucket_count = (table->bucket_count << 1);
+    U32 bucket_count = (table->bucket_count << 1);
     JSON_TABLE_t* table2 = (JSON_TABLE_t*)malloc(sizeof(JSON_TABLE_t));
     table2->buckets = (JSON_CONS_t**)malloc(bucket_count * sizeof(JSON_CONS_t*));
     table2->bucket_count = bucket_count;
@@ -203,7 +203,7 @@ JSON json_geth(JSON json, const char* key) {
     return JSON_NIL;
 
   JSON_TABLE_t* table = (JSON_TABLE_t*)json.data;
-  U4 hash = json_hash_cstring(key) & (table->bucket_count - 1);
+  U32 hash = json_hash_cstring(key) & (table->bucket_count - 1);
 
   if(table->buckets[hash] == (JSON_CONS_t*)0)
     return JSON_NIL;
@@ -222,7 +222,7 @@ void json_delete(JSON json, const char* key) {
     return;
 
   JSON_TABLE_t* table = (JSON_TABLE_t*)json.data;
-  U4 hash = json_hash_cstring(key) & (table->bucket_count - 1);
+  U32 hash = json_hash_cstring(key) & (table->bucket_count - 1);
 
   if(table->buckets[hash] == (JSON_CONS_t*)0)
     return;
@@ -249,7 +249,7 @@ JSON_TABLE_iterator* json_table_iterator(JSON json) {
     return (JSON_TABLE_iterator*)0;
 
   JSON_TABLE_t* table = (JSON_TABLE_t*)json.data;
-  U4 current_bucket = 0;
+  U32 current_bucket = 0;
   while(!table->buckets[current_bucket] && current_bucket < table->bucket_count) current_bucket++;
   if(current_bucket == table->bucket_count)
     return (JSON_TABLE_iterator*)0;
@@ -266,7 +266,7 @@ JSON_TABLE_iterator* json_next(JSON_TABLE_iterator* it) {
   if(it->entry->next) {
     it->entry = it->entry->next;
   } else {
-    U4 current_bucket = it->current_bucket + 1;
+    U32 current_bucket = it->current_bucket + 1;
     JSON_TABLE_t* table = it->table;
     while(!table->buckets[current_bucket] && current_bucket < table->bucket_count) current_bucket++;
     if(current_bucket == table->bucket_count) {
@@ -293,7 +293,7 @@ void json_drop(JSON root) {
     break;
     
   case JSON_ARRAY:
-    for(U4 i = 0; i < json_length(root); i++)
+    for(U32 i = 0; i < json_length(root); i++)
       json_drop(json_getf(root, i));
     JSON_ARRAY_t* arr = (JSON_ARRAY_t*)root.data;
     free(arr->data);

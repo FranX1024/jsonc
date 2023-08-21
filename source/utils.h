@@ -2,8 +2,8 @@
 #define U64 unsigned long long int
 #endif
 
-#ifndef U4
-#define U4 unsigned int
+#ifndef U32
+#define U32 unsigned int
 #endif
 
 #ifndef false
@@ -23,11 +23,11 @@
 #endif
 
 char* json_copy_cstring(const char* string);
-U4    json_hash_cstring(const char* string);
+U32    json_hash_cstring(const char* string);
 
 typedef struct {
-  U4 size;
-  U4 real_size;
+  U32 size;
+  U32 real_size;
   char* string;
 } json_StringBuilder;
 

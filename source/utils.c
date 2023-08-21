@@ -5,15 +5,15 @@
 
 char* json_copy_cstring(const char* string) {
   char* copied;
-  U4 length = strlen(string);
+  U32 length = strlen(string);
   copied = (char*)malloc(length + 1);
   memcpy(copied, string, length + 1);
   return copied;
 }
 
-U4 json_hash_cstring(const char* string) {
-  U4 hash = 5381;
-  for(U4 i = 0; string[i] != 0; i++) {
+U32 json_hash_cstring(const char* string) {
+  U32 hash = 5381;
+  for(U32 i = 0; string[i] != 0; i++) {
     hash = (hash << 5) + hash + string[i];
   }
   return hash;
@@ -27,7 +27,7 @@ U4 json_hash_cstring(const char* string) {
 */
 
 json_StringBuilder* json_create_strb() {
-  U4 real_size = 8;
+  U32 real_size = 8;
   json_StringBuilder* strb = (json_StringBuilder*)malloc(sizeof(json_StringBuilder));
   strb->string = (char*)malloc(real_size);
   strb->real_size = real_size;
@@ -36,10 +36,10 @@ json_StringBuilder* json_create_strb() {
 }
 
 void json_append_strb(json_StringBuilder* strb, const char* cstring) {
-  U4 append_length = 0;
+  U32 append_length = 0;
   while(cstring[append_length]) append_length++;
   
-  U4 new_size = strb->size + append_length;
+  U32 new_size = strb->size + append_length;
 
   // new_size + 1 so that memory is left for null terminator
   
@@ -50,7 +50,7 @@ void json_append_strb(json_StringBuilder* strb, const char* cstring) {
 
   // append null terminator too
   
-  for(U4 i = 0; i <= append_length; i++) {
+  for(U32 i = 0; i <= append_length; i++) {
     strb->string[strb->size + i] = cstring[i];
   }
   strb->size = new_size;
@@ -75,7 +75,7 @@ double json_string_to_number(const char* string) {
   char sign = '+';
   int exponent = 0;
   char exponent_sign = '+';
-  for(U4 i = 0; string[i] != 0; i++) {
+  for(U32 i = 0; string[i] != 0; i++) {
     switch(state) {
     case 0:
       state = 1;
@@ -128,7 +128,7 @@ double json_string_to_number(const char* string) {
   double exp_base = 10;
   if(exponent_sign == '-') exp_base = 0.1;
   
-  for(U4 i = 31; i < ~0; i--) {
+  for(U32 i = 31; i < ~0; i--) {
     factor *= factor;
     if((exponent >> i) & 1) factor *= exp_base;
   }

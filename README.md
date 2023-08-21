@@ -77,7 +77,7 @@ JSON  json_getf(JSON json, unsigned int ind);
 ```
 - gets the value of a specific index in the array
 ```
-U4    json_length(JSON json);
+U32    json_length(JSON json);
 ```
 - gets the length of the array
 

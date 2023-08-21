@@ -91,7 +91,7 @@ char* json_stringify(JSON data) {
 
 #define inc_macro(ind) (*ind)++;if((*ind)>=size){json_drop(data);return JSON_NIL;}
 
-JSON json_recparse(U4 size, const JSON* tokens, U4 *ind) {
+JSON json_recparse(U32 size, const JSON* tokens, U32 *ind) {
   char* first_token = (char*)tokens[*ind].data;
   JSON data;
   
@@ -146,14 +146,14 @@ JSON json_recparse(U4 size, const JSON* tokens, U4 *ind) {
   
   if(first_token[0] == '"') {
     // unescape string
-    U4 length = 0;
-    for(U4 i = 1; first_token[i] != '"'; i++) {
+    U32 length = 0;
+    for(U32 i = 1; first_token[i] != '"'; i++) {
       if(first_token[i] != '\\') length++;
     }
     char* unstr = (char*)malloc(length + 1);
     unstr[length] = 0;
-    U4 pos = 0;
-    for(U4 i = 1; first_token[i] != '"'; i++) {
+    U32 pos = 0;
+    for(U32 i = 1; first_token[i] != '"'; i++) {
       if(first_token[i] == '\\') {
 	switch(first_token[i+1]) {
 	case 'n':
@@ -201,7 +201,7 @@ JSON json_parse(const char* raw) {
   JSON tokens = json_make_array(0);
   json_StringBuilder* strb = json_create_strb();
   bool quoted = false;
-  for(U4 i = 0; raw[i] != 0; i++) {
+  for(U32 i = 0; raw[i] != 0; i++) {
     char current_char[2];
     current_char[0] = raw[i];
     current_char[1] = 0;
@@ -258,7 +258,7 @@ JSON json_parse(const char* raw) {
     free(str);
   } else free(json_finish_strb(strb));
 
-  U4 token_pos = 0;
+  U32 token_pos = 0;
   JSON data = json_recparse(json_length(tokens), ((JSON_ARRAY_t*)tokens.data)->data, &token_pos);
   json_drop(tokens);
   return data;
